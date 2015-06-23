@@ -1,0 +1,49 @@
+﻿{% load antidoping_extras %}
+{% if results|length %}
+	<table class="table table-striped">
+	<tr class='even'>
+		<td colspan="13" class="right">
+		<strong>Se encontraron {{ results|length }} alumnos.</strong>
+		</td>
+	</tr>
+	<tr>
+		<th>
+			<th>Matricula</th>
+			<th>Nombre</th>
+			<th>Apellido</th>
+			<th>Correo</th>
+			<th>Telefono</th>
+		</th>
+	</tr>
+	{% for f in results %}
+	<tr>
+		<td><strong>{{ forloop.counter }}.</strong></td>
+		<td>
+			<div class="input-color">
+				<div class="color-box" style="background-color: {{f.color|color}};"></div>
+			</div>
+		  	<a href="/perfil_estudiante/{{f.matricula}}">{{f.matricula}}</a>
+		    <div id="icons">
+		  		<a href="/edita_estudiante/{{f.matricula}}"><i class="icon-pencil"></i></a>
+		    </div>
+		</td>
+		<td class="right">
+			<span class="hint"> {{ f.nombre }}</span>
+		</td>
+		<td class="right">
+			<span class="hint"> {{ f.apellido }}</span>
+		</td>
+		<td class="right">
+			<span class="hint"> {{ f.correo }}</span>
+		</td>
+		<td class="right">
+			<span class="hint"> {{ f.telefono }}</span>
+		</td>
+	</tr>
+	{% endfor %}
+	</table>
+{% else %}
+	<div class="note">
+	Tu busqueda no arrojo resultados, intenta de nuevo :)
+	</div>
+{% endif %}

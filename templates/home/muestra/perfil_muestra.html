@@ -1,0 +1,98 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load antidoping_extras %}
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ <style type="text/css">
+ #icons{
+  float:right;
+ }
+ </style>
+ 
+ {% endblock %}
+ 
+ {% block script %}
+ <script>
+
+  $(document).ready(function() {
+     $('.notificacion').click(function(id) {
+        var $id = parseInt(this.id.substring(4));
+        window.location.href = ("/carta_notificacion/{{antidoping.id}}/"+$id);
+    });
+  });
+
+ </script>
+
+ {% endblock %}
+ 
+ {% block content %}
+
+
+ <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+
+        <div class="well" style="max-width: 400px; margin: 0 auto 10px;">
+                <button type="button" id="not_1" class="btn btn-small btn-block btn-success notificacion">Primera Notificación</button>
+                <button type="button" id="not_2" class="btn btn-small btn-block btn-warning notificacion">Segunda Notificación</button>
+                <button type="button" id="not_3" class="btn btn-small btn-block btn-danger notificacion">Tercera Notificación</button>
+        </div>
+
+        <h3>Nombre : {{antidoping.nombre}}</h3>
+        <h4>Alumnos</h4>
+
+        <table class="table table-hover">
+          <tr>
+          	<th>Matricula</th>
+          	<th>Nombre</th>
+          	<th>Apellido</th>
+          	<th>Estado</th>
+            <th>Encuesta</th>
+            <th>Adicional</th>
+          </tr>
+          {% for a,b in alumnos %}
+          <tr>
+          	<td><a href="/perfil_estudiante/{{a.matricula}}">{{a.matricula}}</a>
+                    <div id="icons">
+                      <a href="/edita_estudiante/{{a.matricula}}"><i class="icon-pencil"></i></a>
+                    </div>
+            </td>
+          	<td>{{a.nombre}}</td>
+          	<td>{{a.apellido}}</td>
+          	<td>{{b.estado|estado}}</td>
+            {% if b.respuestas %} 
+            <td><a href="/revisar_encuesta/{{b.id}}">{{b.folio}}</a></td> 
+            {% else %}
+            <td>{{b.folio}}</td> 
+            {% endif %}
+            <td><a href="/evaluar_estudiante/{{b.id}}">Editar</a></td>
+          </tr>
+        {% endfor %}
+
+        </table>
+      <h4>Grupos</h4>
+      <table class="table table-hover">
+        <tr>
+        	<th>CRN</th>
+        	<th>Clase Id</th>
+          <th>Profesor</th>
+        </tr>
+      {% for g in grupos %}
+        <tr>
+          	<td>{{g.crn}}</td>
+          	<td>{{g.clase.clave_materia}}</td>
+            <td>{{g.profesor}}</td>
+        </tr>
+      {% endfor %}
+      </table>
+      
+      <p>Notas :
+      {{antidoping.notas}}
+      </p>
+      
+      </div> <!-- /hero-unit -->
+  </div> <!-- /container -->
+ {% endblock %}

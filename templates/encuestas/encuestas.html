@@ -1,0 +1,52 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery.tagsinput.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  #icons{
+    float:right;
+  }
+ </style>
+ 
+ {% endblock %}
+ 
+ {% block script %}
+ 
+ <script src="{{ STATIC_URL }}JS/jquery-1.9.1.min.js"></script>
+ <script src="{{ STATIC_URL }}JS/jquery-ui-1.10.1.custom.js" type="text/javascript" charset="utf-8"></script>
+ <script src="{{ STATIC_URL }}JS/jquery.tagsinput.js" type="text/javascript" charset="utf-8"></script>
+ 
+ {% endblock %}
+ 
+ {% block content %}
+ 
+ <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+      <table class="table table-hover">
+      <tr>
+      <th>#</th>
+        <th>Folio</th>
+      </tr>
+      {% for e in encuestas %}
+      <tr>
+      <td>{{e.id}}
+	<div id="icons">
+	  <a href="/revisar_encuesta/{{e.id}}">
+	    <i class="icon-search"></i>
+	  </a>
+	</div>
+	</td>
+      <td>{{e.folio}}</td>
+      </tr>
+      {% endfor %}
+      <table>
+      </div>
+      <hr>
+    </div> <!-- /container -->
+ 
+ {% endblock %}

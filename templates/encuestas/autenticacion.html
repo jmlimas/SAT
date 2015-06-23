@@ -1,0 +1,26 @@
+{% extends "registration/base.html" %}
+
+{% block style %}{% endblock %}
+
+{% block script %}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+        {% if existe_respuesta %}
+            <center><p>La encuesta con el folio que se introdujo ya fue contestada.</p></center>
+        {% elif no_existe_folio %}
+            <center><p>El folio es incorrecto.</p></center>
+        {% else %}
+            <center><p></p></center>
+        {% endif %}
+        
+        <form class="form-signin" method="POST" action="/autenticacion_encuesta/" > {% csrf_token %}
+            <center><h2 class="form-signin-heading">Iniciar Encuesta</h2></center>
+            <input type="text" name="folio" class="input-block-level" placeholder="Folio">
+            <center><button class="btn btn-large btn-primary" type="submit">Entrar</button></center>
+            <input type="hidden" name="next" value="{{ next|escape }}" />
+        </form>
+    </div> <!-- /container -->
+
+{% endblock %}

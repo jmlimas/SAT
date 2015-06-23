@@ -1,0 +1,34 @@
+{% extends "registration/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+<link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+<link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+<link href="{{ STATIC_URL }}CSS/jquery.tagsinput.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block script %}
+<script src="{{ STATIC_URL }}JS/jquery-1.9.1.min.js"></script>
+<script src="{{ STATIC_URL }}JS/jquery-ui-1.10.1.custom.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}JS/jquery.tagsinput.js" type="text/javascript" charset="utf-8"></script>
+{% endblock %}
+
+{% block content %}
+ 
+<div class="container">
+ 	<div class="hero-unit">
+      <h2>Revisa que tu información sea la correcta</h2>
+        <p>Mi nombre es <strong>{{estudiante.nombre}} {{estudiante.apellido}} </strong> y mi matrícula es {{estudiante.matricula}}.</p>
+        <p>Si existe un error en la información, favor de avisar a alguien del CAT.</p>
+    </div>
+
+      <!-- Main hero unit for a primary marketing message or call to action -->
+	<div class="hero-unit">
+		<h3>Encuesta del CAT </h3>
+		{{ forma.errors }}
+		{% crispy forma %}       	
+	</div>
+  <hr>
+</div> <!-- /container -->
+ 
+ {% endblock %}

@@ -1,0 +1,58 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load antidoping_extras %}
+
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery.tagsinput.css" rel="stylesheet" type="text/css">
+ <style type="text/css">
+ #icons{
+  float:right;
+ }
+ </style>
+ 
+ {% endblock %}
+ 
+ {% block script %}
+ 
+ <script src="{{ STATIC_URL }}JS/jquery.tagsinput.js" type="text/javascript" charset="utf-8"></script>
+ 
+ {% endblock %}
+ 
+ {% block content %}
+ 
+ <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h2>Antidopings</h2>
+        <a href="/seleccion_muestra">
+          <input type="button" class="btn btn-primary" value="Nuevo"></button>
+        </a>
+        <a href="/seleccion_muestra">
+          <input type="button" class="btn btn-primary" value="Editar"></button>
+        </a>
+        <table class="table table-hover">
+          <tr>
+          	<th>Nombre del Antidoping</th>
+          	<th>Fecha de creación</th>
+          	<th>Estado</th>
+          </tr>
+          {% for antidoping in antidopings %}
+          <tr>
+          	<td>
+              <a href="/perfil_muestra/{{antidoping.id}}">{{antidoping.nombre}}</a>
+          	  <div id="icons"><a href="/eliminar_muestra/{{antidoping.id}}"><i class="icon-trash"></i></a></div>
+            </td>
+          	<td>{{antidoping.antidoping_inicio}}</td>
+            <td>{{antidoping.estado_antidoping|estado}}</td>
+            <!-- <td><button class="btn btn-success">Terminado</button>  </td> -->
+          </tr>
+          {% endfor %}
+        </table>
+      </div><!-- /hero-unit -->
+    </div> <!-- /container -->
+ 
+ {% endblock %}

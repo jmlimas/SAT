@@ -1,0 +1,200 @@
+{% extends "home/base.html" %}
+
+{% load antidoping_extras %}
+
+
+{% load crispy_forms_tags %}
+
+
+
+{% block script %}
+
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}JS/highcharts.js"></script>
+<script type="text/javascript" language="javascript" src="{{ STATIC_URL }}JS/boostrap-tab.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function () {
+    $(function () {
+        $(document).ready(function() {
+           var chart;
+           var getColor = {
+            'Verde': '#8CBF26',
+            'Amarillo': '#E8BE1B',
+            'Naranja': '#F09609', 
+            'Rojo': '#E51400', 
+            'Negro': '#202020', 
+            'No encontrado': '#989898'
+        };
+
+   $('#general_container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Resultados Generales'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+                percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'General',
+                data: [
+                    {% for g in general %}
+                    ['{{g.resultado|resultado}}',{{g.Cantidad}}],
+                    {% endfor %}
+                ]
+            }]
+        });
+
+
+   $('#color_container').highcharts({
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false
+            },
+            title: {
+                text: 'Resultados Generales'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage}%</b>',
+                percentageDecimals: 1
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        color: '#000000',
+                        connectorColor: '#000000',
+                        formatter: function() {
+                            return '<b>'+ this.point.name +'</b>: '+ this.percentage +' %';
+                        }
+                    }
+                }
+            },
+            series: [{
+                type: 'pie',
+                name: 'General',
+                data: [
+                    {% for c in color %}
+                    // ['{{c.color|color_texto}}',{{c.Cantidad}}],
+                     {
+                        name: '{{c.color|color_texto}}',
+                        y: {{c.Cantidad}},
+                        color: getColor['{{c.color|color_texto}}']
+                     },
+                    {% endfor %}   
+
+                ]
+            }]
+        });
+
+
+    });
+
+});
+
+    
+});
+
+</script>
+
+{% endblock %}      
+{% block content %}
+    <ul id="tabs" class="nav nav-tabs" data-tabs="tabs">
+        <li class="general"><a href="#general" data-toggle="tab">General</a></li>
+        <li><a href="#color" data-toggle="tab">Color</a></li>
+    </ul>
+
+    <div id="my-tab-content" class="tab-content">
+        <div class="tab-pane active" id="general">
+            <div class="span6">
+                <div id="general_container"></div>
+            </div>
+            <div class="span6">            
+                 <table class="table table-hover">
+                    <thead>
+                        <th>Resultado</th>
+                        <th>Cantidad</th>
+                        <th></th>
+                    </thead>
+                    <tbody>
+                        {% for g in general %}
+                        <tr>
+                            <td>{{g.resultado|resultado}}</td>
+                            <td>{{g.Cantidad}}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                            <td><b>Total</b></td>
+                            <td>{{ total_alumnos_general }}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane" id="color">
+            <div class="span6">
+                <div id="color_container"></div>
+            </div>
+            <div class="span6">        
+            <table class="table table-hover">
+                <thead>
+                    <th>Resultado</th>
+                    <th>Cantidad</th>
+                    <th></th>
+                </thead>
+                <tbody>
+                    {% for c in color %}
+                    <tr>
+                        <td>{{c.color|color_texto}}</td>
+                        <td>{{c.Cantidad}}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><b>Total</b></td>
+                        <td>{{ total_alumnos_color }}</td>
+                    </tr>
+                </tbody>
+            </table> 
+        </div>
+        </div>
+        <div class="tab-pane" id="historial">
+          <!--   <br>
+            <div class="container">
+                <div class="row-fluid">
+                    <div class="span6">
+                        <div id="todos_container"></div>
+                    </div>
+                    <div class="span6">
+                    </div>
+                </div>
+                </div> -->
+            </div>
+        </div>
+    </div>
+
+
+</div>
+{% endblock %}

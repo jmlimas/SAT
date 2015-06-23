@@ -1,0 +1,41 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ {% endblock %}
+ 
+ {% block script %}
+ 
+ <script src="{{ STATIC_URL }}JS/jquery-1.9.1.min.js"></script>
+ <script src="{{ STATIC_URL }}JS/jquery-ui-1.10.1.custom.js" type="text/javascript" charset="utf-8"></script>
+ 
+ <script type="text/javascript">
+    $(document).ready(function() {
+      $('#id_folio').attr('readonly', true);
+      $('#id_nombres').attr('readonly', true);
+      $('#id_apellidos').attr('readonly', true);
+      $('#id_matricula').attr('readonly', true);
+      $('#id_correo').attr('readonly', true);
+      $('#id_semestre').attr('readonly', true);
+      $('#id_opinion').attr('readonly', true);
+      $('#id_frecuencia').attr('readonly', true);
+    });
+  </script>
+ 
+ {% endblock %}
+ 
+ {% block content %}
+ 
+ <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+       <h3>Revisar Encuesta</h3>
+        {{ forma.errors }}
+       	{% crispy forma %}       	
+      </div>
+      <hr>
+  </div> <!-- /container -->
+ 
+{% endblock %}

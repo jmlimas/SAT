@@ -1,0 +1,74 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load antidoping_extras %}
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ <!-- bootstrap widget theme -->
+ <link href="{{ STATIC_URL }}CSS/theme.bootstrap.css" rel="stylesheet" type="text/css">
+ 
+  <style type="text/css">
+  #icons{
+    float:right;
+  }
+ </style>
+ 
+ {% endblock %}
+ 
+ {% block script %}
+
+ {% endblock %}
+ 
+ {% block content %}
+ 
+ <div class="container">
+      <!-- Main hero unit for a primary marketing message or call to action -->
+      <div class="hero-unit">
+        <h3>{{estudiante.nombre}} {{estudiante.apellido}}, {{estudiante.matricula}}  </h3>
+        <!-- <h4>Antidopings</h4> -->
+        <table id="tabla_antidopings" class="table table-hover">
+          <thead>
+        	  <tr>
+        	    <th>Antidoping</th>
+        	    <th>Fecha</th>
+        	    <th>Encuesta</th>
+        	    <th>Estado</th>
+              <th>Folio</th>
+        	    <th>Notas</th>
+              <th>Adicional</th>
+        	  </tr>
+          </thead>
+          <tbody>
+          	{% for estudiante_muestra in resultados %}
+          	<tr>
+          	  <td><a href="/perfil_muestra/{{estudiante_muestra.antidoping_id}}">{{estudiante_muestra.antidoping.nombre}}</a></td>
+          	  <td>{{estudiante_muestra.antidoping.antidoping_inicio}}</td>
+              {% if estudiante_muestra.respuestas %}
+          	  <td><a href="/revisar_encuesta/{{estudiante_muestra.id}}">Revisar</a></td>
+              {% else %}
+              <td>No realizada</td>
+              {%endif%}
+          	  <td>{{estudiante_muestra.estado|estado}}</td>
+              <!-- <td>{{estudiante_muestra.folio}}</td> -->
+              {% if estudiante_muestra.respuestas %} 
+                <td><a href="/revisar_encuesta/{{estudiante_muestra.id}}">{{estudiante_muestra.folio}}</a></td> 
+              {% else %}
+                <td>{{estudiante_muestra.folio}}</td> 
+              {% endif %}
+              {% if estudiante_muestra.notas %}
+          	  <td>{{estudiante_muestra.notas}}</td>
+              {% else %}
+              <td>No hay notas</td>
+              {%endif%}
+              <td><a href="/evaluar_estudiante/{{estudiante_muestra.id}}">Editar</a></td>
+          	</tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>  <!-- /hero-unit -->
+      <hr>
+    </div> <!-- /container -->
+ 
+ {% endblock %}

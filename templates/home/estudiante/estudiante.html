@@ -1,0 +1,92 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block style %}
+
+<link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+<link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+<link href="{{ STATIC_URL }}CSS/jquery.tagsinput.css" rel="stylesheet" type="text/css">
+<!-- bootstrap widget theme -->
+<link href="{{ STATIC_URL }}CSS/theme.bootstrap.css" rel="stylesheet" type="text/css">
+
+<style type="text/css">
+#icons{
+  float:right;
+}
+
+ul {
+    margin: 20px;
+}
+
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 20px;
+    padding-right: 100px;
+}
+.input-color .color-box {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: -25px;
+    top:2px; 
+}
+
+
+</style>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ STATIC_URL }}JS/tablesorter.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}JS/jquery.tagsinput.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}JS/jquery.tablesorter.min.js" type="text/javascript" charset="utf-8"></script>
+<!-- tablesorter widget file - loaded after the plugin -->
+<script src="{{ STATIC_URL }}JS/jquery.tablesorter.pager.js" type="text/javascript" charset="utf-8"></script>
+<script src="{{ STATIC_URL }}JS/jquery.tablesorter.widgets.js" type="text/javascript" charset="utf-8"></script>
+
+<script>
+$(document).ready(function () {
+  $('#spinner').hide();
+  $('#searchSubmit').click(function () {
+    q1 = $('#q1').val();
+    $('#results').html('&nbsp;').load('/estudiante/?q1='+q1);
+  });
+});
+
+$(document).ajaxStart(function () {
+  $('#spinner').show();
+}).ajaxStop(function () {
+  $('#spinner').hide();
+});
+</script>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="container">
+
+  <!-- Main hero unit for a primary marketing message or call to action -->
+  <div class="hero-unit">
+    <a href="/alta_estudiante"><input type="button" class="btn btn-success" value="Alta Estudiante"></button></a>
+    <div class="container" style="width:400px;">
+      <div>
+       <h3>Buscar Estudiante</h3>
+       <label>Matricula:</label>
+       <input id="q1" type="text"/>
+       <input id="searchSubmit" type="submit" value="Buscar" class="btn btn-primary"/>
+       <div class="margin">
+        <span id="spinner"><img src="{{ STATIC_URL }}spinner.gif"/></span>
+      </div>
+    </div>
+  </div>
+  <div id="results"></div>
+
+</div> <!-- /hero-unit -->
+</div> <!-- /container -->
+
+{% endblock %}

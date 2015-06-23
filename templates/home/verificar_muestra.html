@@ -1,0 +1,100 @@
+{% extends "home/base.html" %}
+{% load crispy_forms_tags %}
+{% load antidoping_extras %}
+
+
+ {% block style %}
+ 
+ <link href="{{ STATIC_URL }}CSS/tag-it.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery-ui-1.10.1.custom.css" rel="stylesheet" type="text/css">
+ <link href="{{ STATIC_URL }}CSS/jquery.tagsinput.css" rel="stylesheet" type="text/css">
+  <style type="text/css">
+  #icons{
+    float:right;
+  }
+ </style>
+ 
+ {% endblock %}
+ 
+ {% block script %}
+ 
+ <script src="{{ STATIC_URL }}JS/jquery.tagsinput.js" type="text/javascript" charset="utf-8"></script>
+ 
+ {% endblock %}
+ 
+ {% block content %}
+ 
+ <div class="container">
+{% if error %}
+  <div class="hero-unit">
+    <h2>Hubo un error :(</h2>
+    <p>Lo sentimos hubo un error al procesar la información, probablemente hay una inconsistencia entre la base de datos y la información que se desea procesar.</p>
+  </div>
+{% else %}
+    <form action="/alta_muestra/" method="POST">{% csrf_token %}
+    <input type="hidden" name="antidoping_id" value="{{antidoping_id}}">
+    <div class="hero-unit">
+      <h2>Información general</h2>
+      <p>La muestra fue escogida el día <strong>{{dia}}</strong> entre <strong>{{inicio}}</strong> y <strong>{{fin}}</strong>
+      <p>La cantidad total de alumnos en la muestra es <strong>{{cantidad_total_muestra}}</strong> de los cuales <strong>{{cantidad_total_seleccionados}} fueron señalados.</strong></p>
+      <br />
+      <strong>Importante</strong><p>La cantidad de alumnos puede ser menor que el tamaño de la muestra especificado. Esto es debido a que el rango de alumnos seleccionados por grupo es entre 3 y 5.</p>
+
+      
+    </div>
+
+    <!-- Main hero unit for a primary marketing message or call to action -->
+
+    <div class="hero-unit">
+      <h2>Muestra de alumnos señalados</h2>
+      {% if verificar %}
+        {% if muestra_seleccionados%}
+        <table class="table table-hover">
+          <tr>
+            <th>Matrícula</th>
+            <th>Nombre</th>
+            <th>Grupo</th>
+            <th>Horario</th>
+          </tr>
+          {% for inscrito in muestra_seleccionados %}
+          <tr>
+            <td><input type="checkbox" name="eliminar-de-muestra" value="{{inscrito.id}}" /> {{inscrito.estudiante.matricula}}</td>
+            <td>{{inscrito.estudiante.nombre}} {{inscrito.estudiante.apellido}}</td>
+            <td>{{inscrito.grupo.crn}}</td>
+            <td>{{inscrito|horario:dia}}</td>
+          </tr>
+          {% endfor %}
+        </table>
+        {% else %}
+        <p>No se encontraron alumnos dentro del horario especificado.</p>
+        {% endif %}
+      {% endif %}
+    </div>
+
+    <!-- Main hero unit for a primary marketing message or call to action -->
+    <div class="hero-unit">
+      <h2>Muestra aleatoria</h2>
+      <table class="table table-hover">
+        <tr>
+          <th>Matrícula</th>
+        	<th>Nombre</th>
+          <th>Grupo</th>
+        	<th>Horario</th>
+        </tr>
+        {% for inscrito in muestra %}
+        <tr>
+        	<td><input type="checkbox" name="eliminar-de-muestra" value="{{inscrito.id}}" /> {{inscrito.estudiante.matricula}}</td>
+        	<td>{{inscrito.estudiante.nombre}} {{inscrito.estudiante.apellido}}</td>
+        	<td>{{inscrito.grupo.crn}}
+          <td>{{inscrito|horario:dia}}</td>
+        </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <input class="btn btn-primary" type="submit" value="Eliminar alumnos seleccionados y guardar muestra" />
+    </form>
+    {% endif %}
+    <hr>
+</div> <!-- /container -->
+ 
+ {% endblock %}

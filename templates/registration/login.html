@@ -1,0 +1,24 @@
+{% extends "registration/base.html" %}
+
+{% block style %}{% endblock %}
+
+{% block script %}{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+      <form class="form-signin" method="POST" action="{% url django.contrib.auth.views.login %}" > {% csrf_token %}
+        <h2 class="form-signin-heading">Iniciar Sesión</h2>
+        <input type="text" name="username" class="input-block-level" placeholder="Usuario">
+        <input type="password" name="password" class="input-block-level" placeholder="Contraseña">
+        <label class="checkbox">
+          <input type="checkbox" value="remember-me"> Recordarme
+        </label>
+        <button class="btn btn-large btn-primary" type="submit">Entrar</button>
+        <input type="hidden" name="next" value="{{ next|escape }}" />
+      </form>
+
+    </div> <!-- /container -->
+
+{% endblock %}
